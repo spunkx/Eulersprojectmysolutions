@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+//this is missing the removal of the multiples of 15, something I did not consider
+
 int getLCD(int num1, int num2){
   return num1 * num2;
 }
