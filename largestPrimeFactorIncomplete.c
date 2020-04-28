@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include <stdlib.h>
 #include <stdint.h>
 
@@ -13,21 +14,26 @@
 //still a lot of divisons
 
 //check if even or odd, if even divide by two
-//check if multiple of three if is odd
+//check if multiple of three,blah and blah if is odd
 //check odd divsors if not a multiple of three or then sums of its digits is not a multiple of three? 
-//finish when number squared is greator than the prime
+//finish when number squared is greater than the prime
 int primeFactors(int64_t number, int **arrFactors){
-  int testFactors[5] = {3,5,7,9};
+  int testFactors[4] = {3,5,7,9};
   if(number % 2 == 0){
     primeFactors(number/2, arrFactors);
   }
-  else{
-    for(int test = 0; test < sizeof(testFactors); test++){
+  else if(number % 2 != 0){
+    for(unsigned int test = 0; test < (sizeof(testFactors)/sizeof(int)); test++){
+      //get a number that successfully divides into the odd number
       if(number % testFactors[test] == 0){
-        
+        primeFactors(number/testFactors[test], arrFactors);
+      }
+      else{
+        return number;
       }
     }
   }
+  return number;
 }
 
 int main(void) {
