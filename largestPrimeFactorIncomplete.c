@@ -17,6 +17,7 @@
 //check if multiple of three,blah and blah if is odd
 //check odd divsors if not a multiple of three or then sums of its digits is not a multiple of three? 
 //finish when number squared is greater than the prime
+//interesting idea https://www.youtube.com/watch?v=ZMkIiFs35HQ
 int primeFactors(int64_t number, int **arrFactors){
   int testFactors[4] = {3,5,7,9};
   if(number % 2 == 0){
