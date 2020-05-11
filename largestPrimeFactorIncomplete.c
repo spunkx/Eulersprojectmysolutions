@@ -1,47 +1,78 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-#include <stdint.h>
 
-//https://en.wikipedia.org/wiki/Prime_number
-//Find factors
-//1,2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,51,
-//number mod big number equals 0, is a factor, else is not?
-//recursive call for a number that is not prime to check factors?
-//sieve of Eratosthenes, I was on the right track
-//the pattern is that there are only certain ones digits that make up prime numbers
-//use a binary operation to check "ones" digit..
-//still a lot of divisons
+//gcd?
+//way to 
 
-//check if even or odd, if even divide by two
-//check if multiple of three,blah and blah if is odd
-//check odd divsors if not a multiple of three or then sums of its digits is not a multiple of three? 
-//finish when number squared is greater than the prime
-//interesting idea https://www.youtube.com/watch?v=ZMkIiFs35HQ
-int primeFactors(int64_t number, int **arrFactors){
-  int testFactors[4] = {3,5,7,9};
-  if(number % 2 == 0){
-    primeFactors(number/2, arrFactors);
-  }
-  else if(number % 2 != 0){
-    for(unsigned int test = 0; test < (sizeof(testFactors)/sizeof(int)); test++){
-      //get a number that successfully divides into the odd number
-      if(number % testFactors[test] == 0){
-        primeFactors(number/testFactors[test], arrFactors);
-      }
-      else{
-        return number;
-      }
+//if not get more primes
+  //do this until number is not greater than itself divided by two
+
+void createpotentialPrime(int potePrime[2], int val){
+  //6 * 1  = +1 or -1;
+  //using numberphile multiples of 6 method
+  int multipleSix = 0;
+  multipleSix = val * 6;
+  potePrime[0] = multipleSix - 1;
+  potePrime[1] = multipleSix + 1;
+}
+
+void checkpotePrime(int oddNumber, int isPrime){
+  int singledigPrimes[4] = {3,5,7,9};
+  for(int i = 0; i <= sizeof(singledigPrimes)/sizeof(int); i++){
+    //check if 3,5,7,9 (quickest check)
+    isPrime = singledigPrimes[i] == oddNumber;
+    //check if multiple of 3,5,7,9 (quick check)
+    if(isPrime != 1){
+      isPrime = (oddNumber % singledigPrimes[i]) != 0;
+    }
+    else{
+      break;
     }
   }
+}
+
+int primeFactors(long int number, long int **arrFactors){
+  //add to array of factors
+  if(number % 2 == 0){
+    //even
+    primeFactors(number/2, arrFactors);
+  }
+
+  else if(number % 2 != 0){
+    //odd
+    int *isPrime[2] = {0,0};
+
+    int digitLength = (sizeof(number) / sizeof(int));
+    int *potePrime[2] = {};
+    while(isPrime[0] != 0 || isPrime[1] != 0){
+      for(int i = 1; i <= digitLength; i++){
+        createpotentialPrime(*potePrime, i);
+        checkpotePrime(*potePrime[0], *isPrime[0]);
+        checkpotePrime(*potePrime[1], *isPrime[1]);
+      }
+    }
+
+    //if both are prime check that both divise into the number
+    int isDivisor = 0;
+    while(isDivisor == 0){
+
+
+    }
+
+  }
+  
+
+
   return number;
 }
 
 int main(void) {
   //dynamic memory allocation for larger numbers
-  int64_t NUMBER = 600851475143;
+  long int NUMBER = 600851475143;
   int n = sizeof(NUMBER);
-  int32_t** arrFactors = NULL;
+  //arr factors is of arbitrary length
+  long int** arrFactors = NULL;
   if((arrFactors = malloc(n)) != NULL){
     for(int i=0;i<n;i++){
       *(arrFactors+1) = 0;
@@ -52,6 +83,9 @@ int main(void) {
     exit(0);
   }
   int largestpFactor = primeFactors(NUMBER, arrFactors);
+  if(largestpFactor == 1){
+    printf("Number is maybe prime");
+  }
   printf("\nlargestpFactor %d", largestpFactor);
   return 0;
 }
